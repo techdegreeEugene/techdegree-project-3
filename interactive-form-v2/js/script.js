@@ -118,9 +118,12 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 		 }
 });
 
+
+
 //User must select at least one checkbox under the "Register for Activities" section of the form.
 // document.querySelector("#payment").addEventListener("change", (event) => {
 document.querySelector('.activities').addEventListener('submit', (e) => {
+	e.preventDefault;
 	let checkedBox = 0;
 	for(let i=0;i<checkboxes.length;i++) {
 		
@@ -180,14 +183,20 @@ document.querySelector('.activities').appendChild(h1a);
 document.querySelector('.activities').addEventListener('change', (e) => {
 	const clicked1 = event.target;
 	const clickedCost = clicked1.getAttribute("data-cost");
-	console.log(clickedCost);
+	// console.log(clickedCost);
 		if (clicked1.checked) {
 		activitiesTotal += parseInt(clickedCost);
 		}	else {activitiesTotal -= parseInt(clickedCost)
 		};
-	console.log(activitiesTotal);
+	// console.log(activitiesTotal);
 	h1a.innerText = "Total: $" + activitiesTotal;
+	return activitiesTotal;
 });
+
+
+
+
+
 
 //The "Credit Card" payment option should be selected by default. 
 const cc = document.querySelector(".credit-card");
