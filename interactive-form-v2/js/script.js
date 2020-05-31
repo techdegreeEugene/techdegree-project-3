@@ -2,7 +2,7 @@
 document.getElementById("name").focus(); //When the page first loads, the first text field should be in focus by default.
 //Name field can't be blank.
 
-document.getElementById("name").addEventListener("blur", (event) => { 
+document.getElementById("name").addEventListener("change", (event) => { 
 	if (document.getElementById("name").value === "")
 	{
 		document.querySelector("#name").style.borderColor = "red";		
@@ -14,7 +14,7 @@ document.getElementById("name").addEventListener("blur", (event) => {
 //Email field must be a validly formatted e-mail address
 let email = document.getElementById("mail");
 
-email.addEventListener("blur", (event) => {
+email.addEventListener("keyup", (event) => {
 if (email.value.indexOf("@")>1 && email.value.lastIndexOf(".")>email.value.indexOf("@"))
 	{ email.style.borderColor = "blue";	
 }
@@ -79,11 +79,16 @@ designDrop.addEventListener("change", (event) => {
 		colorDropChoices[3].style.display = "none";
 		colorDropChoices[4].style.display = "none";
 		colorDropChoices[5].style.display = "none";
+		colorDropChoices[0].style.display = "block";
+		colorDropChoices[1].style.display = "block";
+		colorDropChoices[2].style.display = "block";
 	} else if (dropVal === "heart js") {
 		colorDropChoices[0].style.display = "none";
 		colorDropChoices[1].style.display = "none";
 		colorDropChoices[2].style.display = "none";
-	
+		colorDropChoices[3].style.display = "block";
+		colorDropChoices[4].style.display = "block";
+		colorDropChoices[5].style.display = "block";
 		
 		
 	}
@@ -114,16 +119,58 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 });
 
 //User must select at least one checkbox under the "Register for Activities" section of the form.
+// document.querySelector("#payment").addEventListener("change", (event) => {
 document.querySelector('.activities').addEventListener('submit', (e) => {
+	let checkedBox = 0;
 	for(let i=0;i<checkboxes.length;i++) {
-		let checkedBox;
-		if (checkboxes[i].checked = "true") {
-			checkedBox + 1;
-		} else {
+		
+		if (checkboxes[i].checked) {
+			checkedBox += 1;
+			}
+		} 
+
+		if (checkedBox === 0) {
 			document.querySelector(".activities legend").innerText = "Register for Activities - You must choose an Activity";
-		}
-	}
+		} else { document.querySelector(".activities legend").innerText = "Register for Activities" 
+	}	
 });
+
+//Errors for CC, Zip and CVV
+
+let ccNum = document.getElementById("cc-num").value;
+document.getElementById("cc-num").addEventListener("keyup", (event) => { 
+let ccNum = document.getElementById("cc-num").value;
+	if (/^[0-9]{13,16}$/.test(ccNum))
+	{ document.querySelector("div.col-6.col label").innerText = "Card Number:";
+}
+	else {
+		document.querySelector("div.col-6.col label").innerText = "Card Number should be 13-16 digits";
+	}
+
+}); 
+
+let ccZip = document.getElementById("zip").value; 
+document.getElementById("zip").addEventListener("keyup", (event) => { 
+let ccZip = document.getElementById("zip").value; 
+	if (/^[0-9]{5}$/.test(ccZip))
+	{ document.querySelector("div.col-3.col label").innerText = "Zip Code:";
+}
+	else {
+		document.querySelector("div.col-3.col label").innerText = "Zip should be 5 digits";
+	}
+}); 
+
+let ccCvv = document.getElementById("cvv").value; 
+document.getElementById("cvv").addEventListener("change", (event) => { 
+let ccCvv = document.getElementById("cvv").value; 
+	if (/^[0-9]{3,4}$/.test(ccCvv))
+	{ document.querySelector("#cvv").previousElementSibling.innerText = "CVV:";
+}
+	else {
+		document.querySelector("#cvv").previousElementSibling.innerText = "CVV should be 3-4 digits";
+	}
+}); 
+
 
 //As a user selects activities, a running total should display below the list of checkboxes. For example, if the user selects "Main Conference", then Total: $200 should appear. If they add 1 workshop, the total should change to Total: $300.
 let activitiesTotal = 0;
