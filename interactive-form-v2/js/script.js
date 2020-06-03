@@ -82,6 +82,8 @@ designDrop.addEventListener("change", (event) => {
 		colorDropChoices[0].style.display = "block";
 		colorDropChoices[1].style.display = "block";
 		colorDropChoices[2].style.display = "block";
+		colorDropChoices[0].selected = "true";
+
 	} else if (dropVal === "heart js") {
 		colorDropChoices[0].style.display = "none";
 		colorDropChoices[1].style.display = "none";
@@ -89,6 +91,8 @@ designDrop.addEventListener("change", (event) => {
 		colorDropChoices[3].style.display = "block";
 		colorDropChoices[4].style.display = "block";
 		colorDropChoices[5].style.display = "block";
+		colorDropChoices[3].selected = "true"
+
 		
 		
 	}
@@ -101,20 +105,29 @@ designDrop.addEventListener("change", (event) => {
 // Developed by: Robert Manolis - Student Success Specialist
 
 const checkboxes = document.querySelectorAll(".activities input");
-document.querySelector('.activities').addEventListener('change', (e) => {
+document.querySelector('.activities').addEventListener('click', (e) => {
 	const clicked = event.target;
 	const clickedType = clicked.getAttribute("data-day-and-time");
 	// console.log(clicked);
 	// console.log(clickedType);
 	for(let i=0;i<checkboxes.length;i++) {
 		let checkboxType = checkboxes[i].getAttribute("data-day-and-time");
-		if (checkboxType === clickedType && clicked !== checkboxes[i]) {
+		
+		if (checkboxType === clickedType && clicked !== checkboxes[i] && checkboxes[i].disabled) {
+        	checkboxes[i].disabled = "false";
+        	}
+
+
+		else if (checkboxType === clickedType && clicked !== checkboxes[i]) {
 			if (clicked.checked) {
         	checkboxes[i].disabled = "true";
         	 } else {
         	checkboxes[i].disabled = "false";
 		       }
 		    }
+
+		   
+		     
 		 }
 });
 
