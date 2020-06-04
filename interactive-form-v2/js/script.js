@@ -1,15 +1,25 @@
+var form = document.querySelector("#form1");
+var submittable = true;
+
 
 document.getElementById("name").focus(); //When the page first loads, the first text field should be in focus by default.
 //Name field can't be blank.
 
 document.getElementById("name").addEventListener("change", (event) => { 
-	if (document.getElementById("name").value === "")
+	if (/^[a-zA-Z ]{2,30}$/.test(document.getElementById("name").value))
 	{
-		document.querySelector("#name").style.borderColor = "red";		
+		document.querySelector("#name").style.borderColor = "blue";
+		submittable = true;
+		
+
 	} else {
-		document.querySelector("#name").style.borderColor = "blue";		
+		document.querySelector("#name").style.borderColor = "red";	
+		submittable = false;
+		
 	}
+	
 }); 
+
 
 //Email field must be a validly formatted e-mail address
 let email = document.getElementById("mail");
@@ -17,14 +27,20 @@ let email = document.getElementById("mail");
 email.addEventListener("keyup", (event) => {
 if (email.value.indexOf("@")>1 && email.value.lastIndexOf(".")>email.value.indexOf("@"))
 	{ email.style.borderColor = "blue";	
+		submittable = true;
+		
 }
 else if (email.value === "") {
-	email.style.borderColor = "red";		
+	email.style.borderColor = "red";
+	submittable = false;
+	
 }
 else
 {
-	email.style.borderColor = "red";		
+	email.style.borderColor = "red";
+	submittable = false;		
 }
+
 });
 
 
@@ -98,38 +114,54 @@ designDrop.addEventListener("change", (event) => {
 	}
 });
 
-//If the user selects a workshop, don't allow selection of a workshop at the same day and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
-//When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
-//Code borrowed from Treehouse FSJS Techdegree - Project Warm Up
+// If the user selects a workshop, don't allow selection of a workshop at the same day and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
+// When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
+// Code borrowed from Treehouse FSJS Techdegree - Project Warm Up
 // Checkboxes - JS
 // Developed by: Robert Manolis - Student Success Specialist
 
 const checkboxes = document.querySelectorAll(".activities input");
-document.querySelector('.activities').addEventListener('click', (e) => {
+document.querySelector('.activities').addEventListener('change', (e) => {
 	const clicked = event.target;
 	const clickedType = clicked.getAttribute("data-day-and-time");
-	// console.log(clicked);
-	// console.log(clickedType);
+
+	console.log(clicked);
+	console.log(clickedType);
 	for(let i=0;i<checkboxes.length;i++) {
 		let checkboxType = checkboxes[i].getAttribute("data-day-and-time");
-		
+
 		if (checkboxType === clickedType && clicked !== checkboxes[i] && checkboxes[i].disabled) {
-        	checkboxes[i].disabled = "false";
-        	}
-
-
+			checkboxes[i].disabled = false;
+		}
+		
 		else if (checkboxType === clickedType && clicked !== checkboxes[i]) {
+			console.log(checkboxType);
+
 			if (clicked.checked) {
-        	checkboxes[i].disabled = "true";
+        	checkboxes[i].disabled = true;
+    		
         	 } else {
-        	checkboxes[i].disabled = "false";
+        	checkboxes[i].disabled = false;
+
 		       }
 		    }
-
-		   
 		     
 		 }
 });
+
+// const checkboxes = document.querySelectorAll(".activities input");
+// document.querySelector('.activities').addEventListener('change', (e) => {
+// 	const clicked = event.target;
+// 	clicked.setAttribute("clicked","clicked");
+// 	console.log(clicked);
+// 	// const clickedType = clicked.getAttribute("data-day-and-time");
+// 	// if (clicked.checked)
+// 	});
+
+
+
+
+
 
 
 
@@ -147,7 +179,11 @@ document.querySelector('.activities').addEventListener('submit', (e) => {
 
 		if (checkedBox === 0) {
 			document.querySelector(".activities legend").innerText = "Register for Activities - You must choose an Activity";
+				submittable = true;
+			
 		} else { document.querySelector(".activities legend").innerText = "Register for Activities" 
+				submittable = false;
+		
 	}	
 });
 
@@ -158,9 +194,14 @@ document.getElementById("cc-num").addEventListener("keyup", (event) => {
 let ccNum = document.getElementById("cc-num").value;
 	if (/^[0-9]{13,16}$/.test(ccNum))
 	{ document.querySelector("div.col-6.col label").innerText = "Card Number:";
+		document.getElementById("cc-num").borderColor = "blue";
+			submittable = true;
+		
 }
 	else {
 		document.querySelector("div.col-6.col label").innerText = "Card Number should be 13-16 digits";
+		document.getElementById("cc-num").borderColor = "red";
+			submittable = false;
 	}
 
 }); 
@@ -170,9 +211,13 @@ document.getElementById("zip").addEventListener("keyup", (event) => {
 let ccZip = document.getElementById("zip").value; 
 	if (/^[0-9]{5}$/.test(ccZip))
 	{ document.querySelector("div.col-3.col label").innerText = "Zip Code:";
+	  document.querySelector("#zip").borderColor = "blue";
+	  	submittable = true;
 }
 	else {
 		document.querySelector("div.col-3.col label").innerText = "Zip should be 5 digits";
+		document.querySelector("#zip").borderColor = "red";
+			submittable = false;
 	}
 }); 
 
@@ -181,9 +226,15 @@ document.getElementById("cvv").addEventListener("change", (event) => {
 let ccCvv = document.getElementById("cvv").value; 
 	if (/^[0-9]{3,4}$/.test(ccCvv))
 	{ document.querySelector("#cvv").previousElementSibling.innerText = "CVV:";
+	 	document.querySelector("#cvv").borderColor = "blue";
+	 		submittable = true;
+		
 }
 	else {
 		document.querySelector("#cvv").previousElementSibling.innerText = "CVV should be 3-4 digits";
+		document.querySelector("#cvv").borderColor = "red";
+			submittable = false;
+		
 	}
 }); 
 
@@ -248,9 +299,10 @@ document.querySelector("#payment").addEventListener("change", (event) => {
 	};
 });
 
-
-
-
-
-
-
+// const button = document.getElementsByTagName('fieldset')[3].nextElementSibling;
+form.addEventListener("submit", e =>  {
+	e.preventDefault;
+	if(submittable) {
+		e.currentTarget.submit();
+	}
+});
