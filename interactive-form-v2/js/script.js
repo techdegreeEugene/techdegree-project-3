@@ -1,46 +1,58 @@
 var form = document.querySelector("#form1");
-var submittable = true;
+let submittable = [];
+let subName = false;
+let subMail = false;
+let subBox = false;
+let subNum = false;
+let subZip = false;
+let subCVV = false;
+
+
 
 
 document.getElementById("name").focus(); //When the page first loads, the first text field should be in focus by default.
 //Name field can't be blank.
 
+	
+
 document.getElementById("name").addEventListener("change", (event) => { 
 	if (/^[a-zA-Z ]{2,30}$/.test(document.getElementById("name").value))
 	{
-		document.querySelector("#name").style.borderColor = "blue";
-		submittable = true;
-		
+		document.querySelector("#name").style.borderColor = "blue";	
+		subName = true;
 
 	} else {
 		document.querySelector("#name").style.borderColor = "red";	
-		submittable = false;
-		
+		subName = false;
+				
 	}
-	
-}); 
+
+
+console.log(`subName is ${subName}`);	
+
+});
+
 
 
 //Email field must be a validly formatted e-mail address
 let email = document.getElementById("mail");
 
-email.addEventListener("keyup", (event) => {
+email.addEventListener("change", (event) => {
 if (email.value.indexOf("@")>1 && email.value.lastIndexOf(".")>email.value.indexOf("@"))
 	{ email.style.borderColor = "blue";	
-		submittable = true;
+		subMail = true;
 		
 }
 else if (email.value === "") {
 	email.style.borderColor = "red";
-	submittable = false;
-	
+	subMail = false;
 }
 else
 {
 	email.style.borderColor = "red";
-	submittable = false;		
+		subMail = false;	
 }
-
+console.log(`subMail is ${subMail}`);	
 });
 
 
@@ -125,8 +137,8 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 	const clicked = event.target;
 	const clickedType = clicked.getAttribute("data-day-and-time");
 
-	console.log(clicked);
-	console.log(clickedType);
+	// console.log(clicked);
+	// console.log(clickedType);
 	for(let i=0;i<checkboxes.length;i++) {
 		let checkboxType = checkboxes[i].getAttribute("data-day-and-time");
 
@@ -147,6 +159,7 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 		    }
 		     
 		 }
+
 });
 
 // const checkboxes = document.querySelectorAll(".activities input");
@@ -167,7 +180,7 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 
 //User must select at least one checkbox under the "Register for Activities" section of the form.
 // document.querySelector("#payment").addEventListener("change", (event) => {
-document.querySelector('.activities').addEventListener('submit', (e) => {
+document.querySelector('.activities').addEventListener('change', (e) => {
 	e.preventDefault;
 	let checkedBox = 0;
 	for(let i=0;i<checkboxes.length;i++) {
@@ -179,12 +192,12 @@ document.querySelector('.activities').addEventListener('submit', (e) => {
 
 		if (checkedBox === 0) {
 			document.querySelector(".activities legend").innerText = "Register for Activities - You must choose an Activity";
-				submittable = true;
+			subBox = false;	
 			
-		} else { document.querySelector(".activities legend").innerText = "Register for Activities" 
-				submittable = false;
-		
-	}	
+		} else { document.querySelector(".activities legend").innerText = "Register for Activities"; 
+				subBox = true;
+	}
+	console.log(`subBox is ${subBox}`);		
 });
 
 //Errors for CC, Zip and CVV
@@ -195,13 +208,15 @@ let ccNum = document.getElementById("cc-num").value;
 	if (/^[0-9]{13,16}$/.test(ccNum))
 	{ document.querySelector("div.col-6.col label").innerText = "Card Number:";
 		document.getElementById("cc-num").borderColor = "blue";
-			submittable = true;
+		subNum = true;
+			
 		
 }
 	else {
 		document.querySelector("div.col-6.col label").innerText = "Card Number should be 13-16 digits";
 		document.getElementById("cc-num").borderColor = "red";
-			submittable = false;
+		subNum = false;
+			
 	}
 
 }); 
@@ -212,12 +227,14 @@ let ccZip = document.getElementById("zip").value;
 	if (/^[0-9]{5}$/.test(ccZip))
 	{ document.querySelector("div.col-3.col label").innerText = "Zip Code:";
 	  document.querySelector("#zip").borderColor = "blue";
-	  	submittable = true;
+	  subZip = true;
+	  	
 }
 	else {
 		document.querySelector("div.col-3.col label").innerText = "Zip should be 5 digits";
 		document.querySelector("#zip").borderColor = "red";
-			submittable = false;
+		subZip = false;
+			
 	}
 }); 
 
@@ -227,13 +244,15 @@ let ccCvv = document.getElementById("cvv").value;
 	if (/^[0-9]{3,4}$/.test(ccCvv))
 	{ document.querySelector("#cvv").previousElementSibling.innerText = "CVV:";
 	 	document.querySelector("#cvv").borderColor = "blue";
-	 		submittable = true;
+	 	subCVV = true;
+	 		
 		
 }
 	else {
 		document.querySelector("#cvv").previousElementSibling.innerText = "CVV should be 3-4 digits";
 		document.querySelector("#cvv").borderColor = "red";
-			submittable = false;
+		subCVV = false;
+			
 		
 	}
 }); 
@@ -300,9 +319,26 @@ document.querySelector("#payment").addEventListener("change", (event) => {
 });
 
 // const button = document.getElementsByTagName('fieldset')[3].nextElementSibling;
+// document.getElementsByTagName("button")[0].disabled = true;
 form.addEventListener("submit", e =>  {
-	e.preventDefault;
-	if(submittable) {
-		e.currentTarget.submit();
+	e.preventDefault();
+	submittable = [];
+	submittable.push(subName);
+	submittable.push(subMail);
+	submittable.push(subBox);
+	submittable.push(subNum);
+	submittable.push(subZip);
+	submittable.push(subCVV);
+	if (submittable.includes(false)) {
+		// document.getElementsByTagName("button")[0].disabled = false;
+		document.getElementsByTagName("button")[0].textContent = "Fill Out the Fields Above and Submit Again";
+	} else {
+		form.submit();
 	}
+	console.log(`submittable is ${submittable.includes(false)}`);
 });
+
+
+
+
+
