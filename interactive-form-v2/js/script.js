@@ -7,6 +7,21 @@ let subNum = false;
 let subZip = false;
 let subCVV = false;
 
+let nameError = "Please fill out the name field";
+let emailError = "Please fill out the email field";
+let activitiesError = "Please choose at least one activity";
+let paymentErrorNum = "Enter a correct Credit Card number"; 
+let paymentErrorZip = "Enter a correct Zip Code number"; 
+let paymentErrorCVV = "Enter a correct CVV number"; 
+
+let nameErrorBool = false;
+let emailErrorBool = false;
+let activitiesErrorBool = false;
+let paymentErrorNumBool = false;
+let paymentErrorZipBool = false;
+let paymentErrorCVVBool = false;
+
+
 
 
 
@@ -20,11 +35,12 @@ document.getElementById("name").addEventListener("change", (event) => {
 	{
 		document.querySelector("#name").style.borderColor = "blue";	
 		subName = true;
+		nameErrorBool = true;
 
 	} else {
 		document.querySelector("#name").style.borderColor = "red";	
 		subName = false;
-				
+		nameErrorBool = false;		
 	}
 
 
@@ -41,16 +57,19 @@ email.addEventListener("change", (event) => {
 if (email.value.indexOf("@")>1 && email.value.lastIndexOf(".")>email.value.indexOf("@"))
 	{ email.style.borderColor = "blue";	
 		subMail = true;
+		emailErrorBool = true;
 		
 }
 else if (email.value === "") {
 	email.style.borderColor = "red";
 	subMail = false;
+	emailErrorBool = false;
 }
 else
 {
 	email.style.borderColor = "red";
-		subMail = false;	
+		subMail = false;
+		emailErrorBool = false;	
 }
 console.log(`subMail is ${subMail}`);	
 });
@@ -192,10 +211,12 @@ document.querySelector('.activities').addEventListener('change', (e) => {
 
 		if (checkedBox === 0) {
 			document.querySelector(".activities legend").innerText = "Register for Activities - You must choose an Activity";
-			subBox = false;	
+			subBox = false;
+			activitiesErrorBool = false;	
 			
 		} else { document.querySelector(".activities legend").innerText = "Register for Activities"; 
 				subBox = true;
+				activitiesErrorBool = true;
 	}
 	console.log(`subBox is ${subBox}`);		
 });
@@ -209,6 +230,7 @@ let ccNum = document.getElementById("cc-num").value;
 	{ document.querySelector("div.col-6.col label").innerText = "Card Number:";
 		document.getElementById("cc-num").borderColor = "blue";
 		subNum = true;
+		paymentErrorNumBool = true;
 			
 		
 }
@@ -216,6 +238,7 @@ let ccNum = document.getElementById("cc-num").value;
 		document.querySelector("div.col-6.col label").innerText = "Card Number should be 13-16 digits";
 		document.getElementById("cc-num").borderColor = "red";
 		subNum = false;
+		paymentErrorNumBool = false;
 			
 	}
 
@@ -228,12 +251,14 @@ let ccZip = document.getElementById("zip").value;
 	{ document.querySelector("div.col-3.col label").innerText = "Zip Code:";
 	  document.querySelector("#zip").borderColor = "blue";
 	  subZip = true;
+	  paymentErrorZipBool = true;
 	  	
 }
 	else {
 		document.querySelector("div.col-3.col label").innerText = "Zip should be 5 digits";
 		document.querySelector("#zip").borderColor = "red";
 		subZip = false;
+		paymentErrorZipBool = false;
 			
 	}
 }); 
@@ -245,6 +270,7 @@ let ccCvv = document.getElementById("cvv").value;
 	{ document.querySelector("#cvv").previousElementSibling.innerText = "CVV:";
 	 	document.querySelector("#cvv").borderColor = "blue";
 	 	subCVV = true;
+	 	paymentErrorCVVBool = true;
 	 		
 		
 }
@@ -252,6 +278,7 @@ let ccCvv = document.getElementById("cvv").value;
 		document.querySelector("#cvv").previousElementSibling.innerText = "CVV should be 3-4 digits";
 		document.querySelector("#cvv").borderColor = "red";
 		subCVV = false;
+		paymentErrorCVVBool = false;
 			
 		
 	}
@@ -329,14 +356,94 @@ form.addEventListener("submit", e =>  {
 	submittable.push(subNum);
 	submittable.push(subZip);
 	submittable.push(subCVV);
+	errors();
 	if (submittable.includes(false)) {
 		// document.getElementsByTagName("button")[0].disabled = false;
 		document.getElementsByTagName("button")[0].textContent = "Fill Out the Fields Above and Submit Again";
 	} else {
 		form.submit();
 	}
-	console.log(`submittable is ${submittable.includes(false)}`);
+	// console.log(`submittable is ${submittable.includes(false)}`);
 });
+
+let ulError = document.createElement("ul");
+let nameli = document.createElement("li")
+let emailli = document.createElement("li")
+let actli = document.createElement("li");
+let numli = document.createElement("li");
+let zipli = document.createElement("li");
+let cvvli = document.createElement("li");
+nameli.textContent = nameError;
+ulError.appendChild(nameli);
+emailli.textContent = emailError;
+ulError.appendChild(emailli);
+actli.textContent = activitiesError;
+ulError.appendChild(actli);
+numli.textContent = paymentErrorNum;
+ulError.appendChild(numli);
+zipli.textContent = paymentErrorZip;
+ulError.appendChild(zipli);
+cvvli.textContent = paymentErrorCVV;
+ulError.appendChild(cvvli);
+
+
+
+function errors () {
+	console.log(nameErrorBool);
+	console.log(emailErrorBool);
+	console.log(activitiesErrorBool);
+	console.log(paymentErrorNumBool);
+	console.log(paymentErrorZipBool);
+	console.log(paymentErrorCVVBool);
+
+
+
+	cvvli.style.display = "none"
+	nameli.style.display = "none"
+	emailli.style.display = "none"
+ 	actli.style.display = "none"
+	zipli.style.display = "none"
+	numli.style.display = "none"
+	
+	if (!nameErrorBool) {
+	
+	
+
+	}
+	// h2Error += h2Error + ", ";
+	if (!emailErrorBool) {
+	emailli.style.display = "block";
+	
+	}
+	// h2Error += h2Error + ", ";
+	if (!activitiesErrorBool) {
+	
+	actli.style.display = "block";
+	
+	}
+	// h2Error += h2Error + ", ";
+	if (!paymentErrorNumBool) {
+	numli.style.display = "block";
+	
+	}
+	// h2Error += h2Error + ", ";
+	if (!paymentErrorZipBool) {
+	zipli.style.display = "block";
+	
+	}
+	// h2Error += h2Error + ", ";
+	if (!paymentErrorCVVBool) {
+	cvvli.style.display = "block";	
+	
+	}
+	// h2Error += h2Error + ", ";
+	form.appendChild(ulError);
+
+};
+
+
+
+
 
 
 
